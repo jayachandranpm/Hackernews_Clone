@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HackerNews Clone</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4; /* Light mode background color */
+            color: #333333; /* Text color for light mode */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: #ffffff; /* Container background color for light mode */
+            color: #4a4a4a; /* Text color for light mode */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .dark-mode {
+            background-color: #1a1a1a; /* Dark mode background color */
+            color: #e0e0e0; /* Text color for dark mode */
+        }
+        h1, h2 {
+            text-align: center;
+            color: #6a5acd; /* Pastel purple for headings */
+            margin-bottom: 20px;
+        }
+        .news-item {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #6a5acd; /* Pastel purple border */
+            padding-bottom: 10px;
+        }
+        .news-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #6a5acd; /* Pastel purple text color */
+            margin-bottom: 5px;
+        }
+        .news-details {
+            font-size: 14px;
+            color: #808080; /* Neutral accent color */
+        }
+        .news-link {
+            color: #6a5acd; /* Pastel purple link color */
+            text-decoration: none;
+        }
+        .news-link:hover {
+            text-decoration: underline;
+        }
+        .upvote-btn,
+        .comment-btn {
+            background-color: #6a5acd; /* Pastel purple accent color for buttons */
+            color: #ffffff; /* Text color for buttons */
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-right: 10px;
+        }
+        .upvote-btn:hover,
+        .comment-btn:hover {
+            background-color: #483d8b; /* Darker shade on hover */
+        }
+        .dark-mode-toggle {
+            position: fixed;
+            right: 20px;
+            top: 20px;
+            z-index: 1000;
+        }
+        .dark-mode-toggle input {
+            display: none;
+        }
+        .dark-mode-toggle label {
+            cursor: pointer;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+            background-color: #dddddd;
+            border-radius: 15px;
+            position: relative;
+            transition: background-color 0.3s ease;
+        }
+        .dark-mode-toggle label:after {
+            content: '';
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            top: 1px;
+            left: 1px;
+            transition: transform 0.3s ease;
+        }
+        .dark-mode-toggle input:checked + label {
+            background-color: #6a5acd;
+        }
+        .dark-mode-toggle input:checked + label:after {
+            transform: translateX(30px);
+        }
+        .social-icons {
+            margin-top: 10px;
+            text-align: center;
+        }
+        .social-icons a {
+            display: inline-block;
+            margin-right: 10px;
+            font-size: 24px;
+            color: #333333; /* Default color */
+            transition: color 0.3s ease;
+        }
+        .social-icons a:hover {
+            color: #6a5acd; /* Hover color */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!--<div style="text-align: right;">
+            <a href="/login" style="text-decoration: none;">
+                <button style="padding: 8px 12px; border-radius: 5px; background-color: #6a5acd; color: #ffffff; border: none; cursor: pointer; transition: background-color 0.3s ease;">
+                    Login
+                </button>
+            </a>
+        </div>-->
+        <h1>Welcome, {{ username }}!</h1>
+        <h2>HackerNews Clone</h2>
+        <div id="news-items">
+            {% for item in news_items %}
+            <div class="news-item" id="news-{{ item[0] }}"> <!-- Assign a unique ID to each news item -->
+                <div class="news-title {% if item[7] %}read{% endif %}"> <!-- Apply 'read' class conditionally -->
+                    <span>{{ loop.index }}</span>. <a href="{{ item[1] }}" class="news-link" target="_blank">{{ item[0] }}</a>
+                    <span style="margin-left: 10px;"><a href="{{ item[2] }}" class="news-link" target="_blank">HackerNews URL</a></span>
+                </div>
+                <div class="news-details">
+                    <span>Posted on: {{ item[3] }}</span> |
+                    <span>Upvotes: {{ item[4] }}</span> |
+                    <span>Comments: {{ item[5] }}</span>
+                    
+                </div>
+                <div class="social-icons">
+                    <a href="https://twitter.com/intent/tweet?url={{ item[1] }}" class="social-share" target="_blank"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.facebook.com/sharer/sharer.php?u={{ item[1] }}" class="social-share" target="_blank"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.reddit.com/submit?url={{ item[1] }}" class="social-share" target="_blank"><i class="fab fa-reddit"></i></a>
+
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+       <!-- <form id="logout-form" action="/logout" method="post">
+            <button type="submit" id="logout-button">Logout</button>
+        </form>
+    </div> -->
+
+    <!-- Dark mode toggle -->
+    <div class="dark-mode-toggle">
+        <input type="checkbox" id="dark-mode-checkbox">
+        <label for="dark-mode-checkbox"></label>
+    </div>
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    <script>
+        // JavaScript code for handling user interactions and dark mode toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const darkModeCheckbox = document.getElementById('dark-mode-checkbox');
+            const container = document.querySelector('.container');
+
+            darkModeCheckbox.addEventListener('change', function() {
+                if (this.checked) {
+                    container.classList.add('dark-mode');
+                } else {
+                    container.classList.remove('dark-mode');
+                }
+            });
+
+            const upvoteButtons = document.querySelectorAll('.upvote-btn');
+            upvoteButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const itemId = this.getAttribute('data-item-id');
+                    upvoteNewsItem(itemId);
+                });
+            });
+
+            const commentButtons = document.querySelectorAll('.comment-btn');
+            commentButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const itemId = this.getAttribute('data-item-id');
+                    commentOnNewsItem(itemId);
+                });
+            });
+
+            function upvoteNewsItem(itemId) {
+                // Send a request to the backend to handle the upvote
+                // You can use fetch or another method to send a POST request to the server
+                console.log('Upvoting item:', itemId);
+            }
+
+            function commentOnNewsItem(itemId) {
+                // Show a modal or redirect to a comment page
+                console.log('Commenting on item:', itemId);
+            }
+        });
+    </script>
+</body>
+</html>
