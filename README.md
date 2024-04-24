@@ -52,3 +52,7 @@ Usage
 - Browse through the news items, mark them as read, or delete them as desired.
 - Enjoy using the HackerNews Clone application!
 
+
+![dashboard1](https://github.com/jayachandranpm/Hackernews_Clone/assets/82634371/d8c3904a-3903-4e40-b79f-5852f2a6c233)
+
+![dashboard_darkmode](https://github.com/jayachandranpm/Hackernews_Clone/assets/82634371/4f790352-a942-42c5-bcf7-e0c688c30089)
